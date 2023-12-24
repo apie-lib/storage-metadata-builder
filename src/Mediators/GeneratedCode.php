@@ -28,7 +28,7 @@ final class GeneratedCode
 
     public function hasTodos(): bool
     {
-        return count($this->todo) > 1;
+        return count($this->todo) > 0;
     }
 
     public function getNextTodo(): GeneratedCodeContext

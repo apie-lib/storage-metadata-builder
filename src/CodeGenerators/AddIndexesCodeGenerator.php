@@ -21,13 +21,13 @@ class AddIndexesCodeGenerator implements BootGeneratedCodeInterface, PostRunGene
     {
         $class = new ClassType('apie_index_table');
         $constructor = $class->addMethod('__construct');
-        $constructor->addPromotedParameter('search')
+        $constructor->addPromotedParameter('text')
             ->setType('string');
         $constructor->addPromotedParameter('priority')
             ->setType('int');
         $constructor->addPromotedParameter('idf', null)
             ->setType('?float');
-        $constructor->addPromotedParameter('tdf', null)
+        $constructor->addPromotedParameter('tf', null)
             ->setType('?float');
         $generatedCode->generatedCodeHashmap['apie_index_table'] = $class;
     }
@@ -36,11 +36,11 @@ class AddIndexesCodeGenerator implements BootGeneratedCodeInterface, PostRunGene
         $indexTable = $generatedCodeContext->generatedCode->generatedCodeHashmap['apie_index_table'] ?? null;
         assert($indexTable instanceof ClassType);
         foreach ($generatedCodeContext->generatedCode->generatedCodeHashmap->getObjectsWithInterface(RootObjectInterface::class) as $code) {
-            $code->addTrait(HasIndexes::class);
+            $code->addTrait('\\' . HasIndexes::class);
             $code->addImplement(HasIndexInterface::class);
             $code->addMethod('getIndexTable')
                 ->setReturnType('ReflectionClass')
-                ->setBody('return new ReflectionClass(' . $indexTable->getName() . '::class);');
+                ->setBody('return new \\ReflectionClass(' . $indexTable->getName() . '::class);');
             $code->addProperty('_indexes')
                 ->setType('array')
                 ->addAttribute(OneToManyAttribute::class, [null, 'apie_index_table']);

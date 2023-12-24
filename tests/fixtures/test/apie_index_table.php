@@ -10,12 +10,15 @@ class apie_index_table
 	#[Apie\StorageMetadata\Attributes\ManyToOneAttribute('_indexes')]
 	public ?apie_resource__default_order $ref_apie_resource__default_order = null;
 
+	#[Apie\StorageMetadata\Attributes\ManyToOneAttribute('_indexes')]
+	public ?apie_resource__default_user_with_address $ref_apie_resource__default_user_with_address = null;
+
 
 	public function __construct(
-		public string $search,
+		public string $text,
 		public int $priority,
 		public ?float $idf = null,
-		public ?float $tdf = null,
+		public ?float $tf = null,
 	) {
 	}
 }

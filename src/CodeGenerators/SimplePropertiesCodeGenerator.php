@@ -4,6 +4,7 @@ namespace Apie\StorageMetadataBuilder\CodeGenerators;
 use Apie\Core\Context\ApieContext;
 use Apie\Core\Enums\ScalarType;
 use Apie\Core\Identifiers\KebabCaseSlug;
+use Apie\Core\Metadata\Fields\FieldInterface;
 use Apie\Core\Metadata\MetadataFactory;
 use Apie\StorageMetadata\Attributes\OneToOneAttribute;
 use Apie\StorageMetadata\Attributes\PropertyAttribute;
@@ -66,13 +67,15 @@ return $this->unserializedObject;'
         if ($table->hasProperty($propertyName)) {
             return;
         }
+        $nullable = (($metadata instanceof FieldInterface ? $metadata->allowsNull() : false) ? '?' : '');
+        $nullable = '?';
         $declaredProperty = $table->addProperty($propertyName)
-            ->setType($scalar->value);
+            ->setType($nullable . $scalar->value);
         switch ($scalar) {
             case ScalarType::ARRAY:
             case ScalarType::STDCLASS:
             case ScalarType::MIXED:
-                $declaredProperty->setType('apie_mixed_data')->addAttribute(OneToOneAttribute::class, [$property->name, $property->getDeclaringClass()->name]);
+                $declaredProperty->setType($nullable . 'apie_mixed_data')->addAttribute(OneToOneAttribute::class, [$property->name, $property->getDeclaringClass()->name]);
                 break;
             case ScalarType::NULL:
                 $declaredProperty->setType(null)
