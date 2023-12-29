@@ -22,12 +22,14 @@ trait HasIndexes
                 if ($current[$offset]->search !== $search || $current[$offset]->priority !== $priority) {
                     $current[$offset]->search = $search;
                     $current[$offset]->priority = $priority;
-                    $current[$offset]->idf = null;
-                    $current[$offset]->tdf = null;
+                    $current[$offset]->idf = 1;
+                    $current[$offset]->tdf = 1;
                 }
             } else {
                 $current[$offset] = $this->getIndexTable()->newInstance($search, $priority);
             }
+            $ref = 'ref_' . (new ReflectionClass($this))->getShortName();
+            $current[$offset]->$ref = $this;
             $offset++;
         }
         $current = array_slice($current, 0, $offset);
