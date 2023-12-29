@@ -25,10 +25,10 @@ class AddIndexesCodeGenerator implements BootGeneratedCodeInterface, PostRunGene
             ->setType('string');
         $constructor->addPromotedParameter('priority')
             ->setType('int');
-        $constructor->addPromotedParameter('idf', null)
-            ->setType('?float');
-        $constructor->addPromotedParameter('tf', null)
-            ->setType('?float');
+        $constructor->addPromotedParameter('idf', 0)
+            ->setType('float');
+        $constructor->addPromotedParameter('tf', 0)
+            ->setType('float');
         $generatedCode->generatedCodeHashmap['apie_index_table'] = $class;
     }
     public function postRun(GeneratedCodeContext $generatedCodeContext): void

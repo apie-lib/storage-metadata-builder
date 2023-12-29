@@ -17,8 +17,8 @@ class apie_index_table
 	public function __construct(
 		public string $text,
 		public int $priority,
-		public ?float $idf = null,
-		public ?float $tf = null,
+		public float $idf = 0,
+		public float $tf = 0,
 	) {
 	}
 }
