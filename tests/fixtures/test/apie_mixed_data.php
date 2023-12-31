@@ -16,7 +16,7 @@ class apie_mixed_data implements Apie\StorageMetadataBuilder\Interfaces\MixedSto
 
 	public function toOriginalObject(): mixed
 	{
-		if (!$this->unserializedObject) {
+		if (!isset($this->unserializedObject)) {
 		    $this->unserializedObject = unserialize($this->serializedString);
 		    if (get_debug_type($this->unserializedObject) !== $this->originalType) {
 		        throw new \LogicException("Could not unserialize object again");
