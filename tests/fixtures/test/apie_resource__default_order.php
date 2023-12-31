@@ -15,6 +15,9 @@ class apie_resource__default_order implements \Apie\StorageMetadata\Interfaces\S
 	#[Apie\StorageMetadata\Attributes\GetSearchIndexAttribute('getOrderStatus')]
 	public array $search_orderStatus;
 
+	#[Apie\StorageMetadata\Attributes\GetSearchIndexAttribute('getOrderLines')]
+	public array $search_orderLines;
+
 	#[Apie\StorageMetadata\Attributes\OneToManyAttribute('orderLines', 'apie_list__default_order__orderLines', 'Apie\Fixtures\Entities\Order')]
 	public $apie_order_order_lines;
 

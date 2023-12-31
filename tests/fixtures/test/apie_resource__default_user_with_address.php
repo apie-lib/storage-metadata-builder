@@ -12,6 +12,9 @@ class apie_resource__default_user_with_address implements \Apie\StorageMetadata\
 	#[Apie\StorageMetadata\Attributes\GetSearchIndexAttribute('getId')]
 	public array $search_id;
 
+	#[Apie\StorageMetadata\Attributes\GetSearchIndexAttribute('getAddress')]
+	public array $search_address;
+
 	#[Apie\StorageMetadata\Attributes\OneToOneAttribute('address', 'Apie\Fixtures\Entities\UserWithAddress')]
 	public ?apie_mixed_data $apie_user_with_address_address;
 
