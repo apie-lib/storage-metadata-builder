@@ -15,13 +15,13 @@ trait HasIndexes
      */
     public function replaceIndexes(array $indexes): void
     {
-        $current = isset($this->_index) ? Utils::toArray($this->_index) : [];
+        $current = isset($this->_indexes) ? Utils::toArray($this->_indexes) : [];
         $offset = 0;
         $refProperty = 'ref_' . (new ReflectionClass($this))->getShortName();
         foreach ($indexes as $search => $priority) {
             if (isset($current[$offset])) {
-                if ($current[$offset]->search !== $search || $current[$offset]->priority !== $priority) {
-                    $current[$offset]->search = $search;
+                if ($current[$offset]->text !== $search || $current[$offset]->priority !== $priority) {
+                    $current[$offset]->text = $search;
                     $current[$offset]->priority = $priority;
                     $current[$offset]->idf = 1;
                     $current[$offset]->tdf = 1;
