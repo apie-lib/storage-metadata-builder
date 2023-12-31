@@ -37,7 +37,7 @@ final class SimplePropertiesCodeGenerator implements RunGeneratedCodeContextInte
         $mixedData->addMethod('toOriginalObject')
             ->setReturnType('mixed')
             ->setBody(
-                'if (!$this->unserializedObject) {
+                'if (!isset($this->unserializedObject)) {
     $this->unserializedObject = unserialize($this->serializedString);
     if (get_debug_type($this->unserializedObject) !== $this->originalType) {
         throw new \LogicException("Could not unserialize object again");
