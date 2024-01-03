@@ -10,6 +10,9 @@ use Apie\StorageMetadataBuilder\Interfaces\RunGeneratedCodeContextInterface;
 use Apie\StorageMetadataBuilder\Mediators\GeneratedCodeContext;
 use Nette\PhpGenerator\ClassType;
 
+/**
+ * Maps auto increment value objects. This is done with an additional table that just contains id's.
+ */
 class AddAutoIdGenerator implements RunGeneratedCodeContextInterface
 {
     public function run(GeneratedCodeContext $generatedCodeContext): void

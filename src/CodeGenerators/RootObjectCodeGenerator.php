@@ -11,7 +11,6 @@ use Apie\StorageMetadataBuilder\Factories\ClassTypeFactory;
 use Apie\StorageMetadataBuilder\Interfaces\RootObjectInterface;
 use Apie\StorageMetadataBuilder\Interfaces\RunGeneratedCodeContextInterface;
 use Apie\StorageMetadataBuilder\Mediators\GeneratedCodeContext;
-use Apie\TypeConverter\ReflectionTypeFactory;
 
 /**
  * Creates the root entities.

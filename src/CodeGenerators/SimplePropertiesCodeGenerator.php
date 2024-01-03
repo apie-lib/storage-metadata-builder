@@ -17,6 +17,12 @@ use Apie\TypeConverter\ReflectionTypeFactory;
 use Nette\PhpGenerator\ClassType;
 use Nette\PhpGenerator\Parameter;
 
+/**
+ * Maps simple properties that require no additional tables.
+ * - create apie_mixed_data table that can story any PHP object (which is used as a fallback)
+ * - create for a domain object property a property in the database table.
+ * - if this can be mapped to a scalar, it will be a regular property, else it will be mapped to apie_mixed_data as one to many
+ */
 final class SimplePropertiesCodeGenerator implements RunGeneratedCodeContextInterface, BootGeneratedCodeInterface
 {
     public function boot(GeneratedCode $generatedCode): void

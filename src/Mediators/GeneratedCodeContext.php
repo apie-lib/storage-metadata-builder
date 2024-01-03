@@ -57,6 +57,9 @@ final class GeneratedCodeContext
         $this->generatedCode->generatedCodeHashmap[$tableName] = $table;
         if ($this->currentObject !== null) {
             foreach (ReflectionPropertyList::createFromClass($this->currentObject) as $property) {
+                if ($property->isStatic()) {
+                    continue;
+                }
                 $clone = clone $this;
                 $clone->visited[] = $property;
                 $clone->visitedTables[] = $table;
@@ -81,7 +84,7 @@ final class GeneratedCodeContext
                 '__',
                 array_map(
                     function (ReflectionProperty $property) {
-                        return $property->name;
+                        return str_replace('-', '_', (string) KebabCaseSlug::fromClass($property));
                     },
                     $this->visited
                 )

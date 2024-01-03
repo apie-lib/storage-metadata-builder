@@ -3,11 +3,13 @@ namespace Apie\StorageMetadataBuilder\CodeGenerators;
 
 use Apie\Core\Context\ApieContext;
 use Apie\Core\Identifiers\KebabCaseSlug;
+use Apie\Core\Metadata\CompositeMetadata;
 use Apie\Core\Metadata\ItemHashmapMetadata;
 use Apie\Core\Metadata\ItemListMetadata;
 use Apie\Core\Metadata\MetadataFactory;
 use Apie\Core\Utils\ConverterUtils;
 use Apie\StorageMetadata\Attributes\OneToManyAttribute;
+use Apie\StorageMetadata\Attributes\OneToOneAttribute;
 use Apie\StorageMetadata\Attributes\OrderAttribute;
 use Apie\StorageMetadata\Attributes\ParentAttribute;
 use Apie\StorageMetadataBuilder\Factories\ClassTypeFactory;
@@ -20,7 +22,7 @@ use Apie\StorageMetadataBuilder\Mediators\GeneratedCodeContext;
  * - the sub table references the entity with 'parent' property
  * - an 'order' property is made for the index of the hashmap or the order of the list.
  */
-final class ItemListCodeGenerator implements RunGeneratedCodeContextInterface
+final class SubObjectCodeGenerator implements RunGeneratedCodeContextInterface
 {
     public function run(GeneratedCodeContext $generatedCodeContext): void
     {
@@ -39,27 +41,15 @@ final class ItemListCodeGenerator implements RunGeneratedCodeContextInterface
         if ($currentTable->hasProperty($propertyName)) {
             return;
         }
-        if ($metadata instanceof ItemListMetadata || $metadata instanceof ItemHashmapMetadata) {
+        if ($metadata instanceof CompositeMetadata) {
             $tableName = $generatedCodeContext->getPrefix(
-                $metadata instanceof ItemListMetadata
-                ? 'apie_list_'
-                : 'apie_map_'
+                'apie_resource_'
             );
-            $arrayType = $class->getMethod('offsetGet')->getReturnType();
-            $arrayClass = $arrayType ? ConverterUtils::toReflectionClass($arrayType) : null;
-            if (null === $arrayClass) {
-                return;
-            }
-            $table = ClassTypeFactory::createStorageTable($tableName, $arrayClass);
-            $table->addProperty('parent')
-                ->setType($currentTable->getName())
-                ->addAttribute(ParentAttribute::class);
-            $table->addProperty('order')
-                ->setType($metadata instanceof ItemListMetadata ? 'int' : 'string')
-                ->addAttribute(OrderAttribute::class);
-            $generatedCodeContext->withCurrentObject($arrayClass)->iterateOverTable($table);
+            $table = ClassTypeFactory::createStorageTable($tableName, $class);
+            $generatedCodeContext->withCurrentObject($class)->iterateOverTable($table);
             $currentTable->addProperty($propertyName)
-                ->addAttribute(OneToManyAttribute::class, [$property->name, $tableName, $property->getDeclaringClass()->name]);
+                ->setType($tableName)
+                ->addAttribute(OneToOneAttribute::class, [$property->name, null, $property->getDeclaringClass()->name]);
         }
     }
 }

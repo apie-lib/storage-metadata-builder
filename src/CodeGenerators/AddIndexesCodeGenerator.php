@@ -14,6 +14,9 @@ use Nette\PhpGenerator\ClassType;
 
 /**
  * Adds a single index table for all tables to be able to do text searches.
+ * - creates a global apie_index_table table
+ * - for every root object add HasIndexes trait and HasIndexInterface
+ * - for every root object add a nullable property in apie_index_table to reference this table.
  */
 class AddIndexesCodeGenerator implements BootGeneratedCodeInterface, PostRunGeneratedCodeContextInterface
 {
