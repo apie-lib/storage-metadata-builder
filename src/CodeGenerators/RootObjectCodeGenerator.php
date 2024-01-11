@@ -2,7 +2,6 @@
 namespace Apie\StorageMetadataBuilder\CodeGenerators;
 
 use Apie\Core\Context\ApieContext;
-use Apie\Core\Enums\ScalarType;
 use Apie\Core\Metadata\Fields\GetterMethod;
 use Apie\Core\Metadata\Fields\PublicProperty;
 use Apie\Core\Metadata\MetadataFactory;
