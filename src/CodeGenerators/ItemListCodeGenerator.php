@@ -54,7 +54,7 @@ final class ItemListCodeGenerator implements RunGeneratedCodeContextInterface
             $table->addProperty('parent')
                 ->setType($currentTable->getName())
                 ->addAttribute(ParentAttribute::class);
-            $table->addProperty('order')
+            $table->addProperty('listOrder')
                 ->setType($metadata instanceof ItemListMetadata ? 'int' : 'string')
                 ->addAttribute(OrderAttribute::class);
             $generatedCodeContext->withCurrentObject($arrayClass)->iterateOverTable($table);
