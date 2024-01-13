@@ -4,6 +4,8 @@ namespace Apie\StorageMetadataBuilder\Mediators;
 use Apie\Core\Actions\BoundedContextEntityTuple;
 use Apie\Core\Identifiers\KebabCaseSlug;
 use Apie\Core\Utils\ConverterUtils;
+use Apie\StorageMetadata\Attributes\ManyToOneAttribute;
+use Apie\StorageMetadata\Attributes\ParentAttribute;
 use Apie\StorageMetadataBuilder\Lists\ReflectionPropertyList;
 use Apie\TypeConverter\ReflectionTypeFactory;
 use Nette\PhpGenerator\ClassType;
@@ -45,6 +47,30 @@ final class GeneratedCodeContext
         $res = clone $this;
         $res->currentObject = $currentObject;
         return $res;
+    }
+
+    public function findParentProperty(string $tableName): ?string
+    {
+        $classType = $this->generatedCode->generatedCodeHashmap[$tableName] ?? null;
+        if (!$classType) {
+            return null;
+        }
+        // TODO promoted constructor arguments? In general parents are not set in the constructor.
+        $foundProperty = null;
+        foreach ($classType->getProperties() as $property) {
+            foreach ($property->getAttributes() as $attribute) {
+                if ($attribute->getName() === ManyToOneAttribute::class) {
+                    if ($property->getType() === $this->currentObject->name) {
+                        return $property->getName();
+                    }
+                }
+                if ($attribute->getName() === ParentAttribute::class) {
+                    $foundProperty = $property;
+                }
+            }
+        }
+
+        return $foundProperty?->getName();
     }
 
     public function iterateOverTable(ClassType $table): void
