@@ -47,11 +47,11 @@ class StorageMetadataBuilderTest extends TestCase
             $path = $fixturePath . DIRECTORY_SEPARATOR . $name . '.php';
             if ($overwrite) {
                 @mkdir(dirname($path), recursive: true);
-                file_put_contents($path, "<?php\n" . $sourceCode);
+                file_put_contents($path, "<?php\n// @codingStandardsIgnoreStart\n" . $sourceCode);
             }
             $this->assertEquals(
                 file_get_contents($path),
-                "<?php\n" . $sourceCode
+                "<?php\n// @codingStandardsIgnoreStart\n" . $sourceCode
             );
         }
     }
