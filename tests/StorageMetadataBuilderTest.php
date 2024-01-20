@@ -44,7 +44,7 @@ class StorageMetadataBuilderTest extends TestCase
     private function assertCorrectCode(GeneratedCode $code, string $fixturePath, bool $overwrite = false)
     {
         foreach ($code->generatedCodeHashmap as $name => $sourceCode) {
-            $path = $fixturePath . DIRECTORY_SEPARATOR . $name . '.php';
+            $path = $fixturePath . DIRECTORY_SEPARATOR . $name . '.phpinc';
             if ($overwrite) {
                 @mkdir(dirname($path), recursive: true);
                 file_put_contents($path, "<?php\n// @codingStandardsIgnoreStart\n" . $sourceCode);
