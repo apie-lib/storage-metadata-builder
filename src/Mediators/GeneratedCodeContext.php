@@ -6,6 +6,7 @@ use Apie\Core\Identifiers\KebabCaseSlug;
 use Apie\Core\Utils\ConverterUtils;
 use Apie\StorageMetadata\Attributes\ManyToOneAttribute;
 use Apie\StorageMetadata\Attributes\OneToManyAttribute;
+use Apie\StorageMetadata\Attributes\OrderAttribute;
 use Apie\StorageMetadata\Attributes\ParentAttribute;
 use Apie\StorageMetadataBuilder\Lists\ReflectionPropertyList;
 use Apie\TypeConverter\ReflectionTypeFactory;
@@ -90,6 +91,24 @@ final class GeneratedCodeContext
         }
 
         return $foundProperty?->getName();
+    }
+
+    public function findIndexProperty(string $tableName): ?string
+    {
+        $classType = $this->generatedCode->generatedCodeHashmap[$tableName] ?? null;
+        if (!$classType) {
+            return null;
+        }
+        // TODO promoted constructor arguments? In general indexes are not set in the constructor.
+        foreach ($classType->getProperties() as $property) {
+            foreach ($property->getAttributes() as $attribute) {
+                if ($attribute->getName() === OrderAttribute::class) {
+                    return $property->getName();
+                }
+            }
+        }
+
+        return null;
     }
 
     public function iterateOverTable(ClassType $table): void
