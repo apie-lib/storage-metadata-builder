@@ -1,12 +1,14 @@
 <?php
 namespace Apie\StorageMetadataBuilder;
 
+use Apie\Core\Actions\BoundedContextEntityTuple;
 use Apie\Core\BoundedContext\BoundedContextHashmap;
 use Apie\StorageMetadataBuilder\Interfaces\BootGeneratedCodeInterface;
 use Apie\StorageMetadataBuilder\Interfaces\PostRunGeneratedCodeContextInterface;
 use Apie\StorageMetadataBuilder\Interfaces\RunGeneratedCodeContextInterface;
 use Apie\StorageMetadataBuilder\Lists\GeneratedCodeHashmap;
 use Apie\StorageMetadataBuilder\Mediators\GeneratedCode;
+use Apie\StorageMetadataBuilder\Mediators\GeneratedCodeContext;
 
 final class StorageMetadataBuilder
 {
@@ -30,7 +32,10 @@ final class StorageMetadataBuilder
             $context = $code->getNextTodo();
             $this->runGeneratedCode->run($context);
         }
-        $this->postRunGeneratedCode->postRun($context);
+        if (!isset($context)) {
+            $context = new GeneratedCodeContext($code, null);
+        }
+        $this->postRunGeneratedCode->postRun($context);  
 
         return $code;
     }

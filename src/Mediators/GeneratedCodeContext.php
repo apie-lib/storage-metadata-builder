@@ -24,9 +24,9 @@ final class GeneratedCodeContext
 
     public function __construct(
         public readonly GeneratedCode $generatedCode,
-        public readonly BoundedContextEntityTuple $boundedContextEntityTuple
+        public readonly ?BoundedContextEntityTuple $boundedContextEntityTuple
     ) {
-        $this->currentObject = $boundedContextEntityTuple->resourceClass;
+        $this->currentObject = $boundedContextEntityTuple?->resourceClass;
     }
 
     public function getCurrentObject(): ?ReflectionClass
