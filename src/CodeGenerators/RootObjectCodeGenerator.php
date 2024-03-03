@@ -28,14 +28,14 @@ final class RootObjectCodeGenerator implements RunGeneratedCodeContextInterface
         $table = ClassTypeFactory::createStorageTable($tableName, $currentObject);
         $metadata = MetadataFactory::getResultMetadata($currentObject, new ApieContext());
         foreach ($metadata->getHashmap() as $fieldName => $fieldDefinition) {
-            if ($fieldDefinition instanceof GetterMethod) {
+            if ($fieldDefinition instanceof GetterMethod || $fieldDefinition instanceof PublicProperty) {
                 $searchProperty = $table->addProperty('search_' . $fieldName);
                 $searchProperty->setType('array');
-                $searchProperty->addAttribute(GetSearchIndexAttribute::class, [$fieldDefinition->getReflectionMethod()->name]);
-            } elseif ($fieldDefinition instanceof PublicProperty) {
-                $searchProperty = $table->addProperty('search_' . $fieldName);
-                $searchProperty->setType('array');
-                $searchProperty->addAttribute(GetSearchIndexAttribute::class, [$fieldName]);
+                if ($fieldDefinition instanceof GetterMethod) {
+                    $searchProperty->addAttribute(GetSearchIndexAttribute::class, [$fieldDefinition->getReflectionMethod()->name]);
+                } elseif ($fieldDefinition instanceof PublicProperty) {
+                    $searchProperty->addAttribute(GetSearchIndexAttribute::class, [$fieldName]);
+                }
             }
         }
 
