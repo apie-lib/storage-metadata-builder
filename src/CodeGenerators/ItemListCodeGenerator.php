@@ -2,6 +2,7 @@
 namespace Apie\StorageMetadataBuilder\CodeGenerators;
 
 use Apie\Core\Context\ApieContext;
+use Apie\Core\Enums\ScalarType;
 use Apie\Core\Identifiers\KebabCaseSlug;
 use Apie\Core\Metadata\ItemHashmapMetadata;
 use Apie\Core\Metadata\ItemListMetadata;
@@ -40,24 +41,27 @@ final class ItemListCodeGenerator implements RunGeneratedCodeContextInterface
             return;
         }
         if ($metadata instanceof ItemListMetadata || $metadata instanceof ItemHashmapMetadata) {
-            $tableName = $generatedCodeContext->getPrefix(
-                $metadata instanceof ItemListMetadata
-                ? 'apie_list_'
-                : 'apie_map_'
-            );
+            $tableName = $generatedCodeContext->getPrefix('apie_resource_');
             $arrayType = $class->getMethod('offsetGet')->getReturnType();
-            $arrayClass = $arrayType ? ConverterUtils::toReflectionClass($arrayType) : null;
-            if (null === $arrayClass) {
+            $scalar = MetadataFactory::getScalarForType($arrayType, $arrayType->allowsNull());
+            if (!$arrayType || 'mixed' === (string) $arrayType) {
                 return;
             }
-            $table = ClassTypeFactory::createStorageTable($tableName, $arrayClass);
+            $arrayClass = $arrayType ? ConverterUtils::toReflectionClass($arrayType) : null;
+            $table = in_array($scalar, ScalarType::PRIMITIVES)
+                ? ClassTypeFactory::createPrimitiveTable($tableName, $scalar->toReflectionType())
+                : ClassTypeFactory::createStorageTable($tableName, $arrayClass);
             $table->addProperty('parent')
                 ->setType($currentTable->getName())
                 ->addAttribute(ParentAttribute::class);
             $table->addProperty('listOrder')
                 ->setType($metadata instanceof ItemListMetadata ? 'int' : 'string')
                 ->addAttribute(OrderAttribute::class);
-            $generatedCodeContext->withCurrentObject($arrayClass)->iterateOverTable($table);
+            if (in_array($scalar, ScalarType::PRIMITIVES)) {
+                $generatedCodeContext->generatedCode->generatedCodeHashmap[$tableName] = $table;
+            } else {
+                $generatedCodeContext->withCurrentObject($arrayClass)->iterateOverTable($table);
+            }
             $currentTable->addProperty($propertyName)
                 ->addAttribute(OneToManyAttribute::class, [$property->name, $tableName, $property->getDeclaringClass()->name]);
         }

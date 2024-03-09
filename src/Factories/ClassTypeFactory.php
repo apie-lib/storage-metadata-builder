@@ -9,8 +9,10 @@ use Apie\StorageMetadata\Attributes\GetMethodAttribute;
 use Apie\StorageMetadata\Interfaces\StorageClassInstantiatorInterface;
 use Apie\StorageMetadata\Interfaces\StorageDtoInterface;
 use Apie\StorageMetadataBuilder\Concerns\IsPolymorphicStorage;
+use Apie\StorageMetadataBuilder\Interfaces\MixedStorageInterface;
 use Nette\PhpGenerator\ClassType;
 use ReflectionClass;
+use ReflectionNamedType;
 
 final class ClassTypeFactory
 {
@@ -19,6 +21,20 @@ final class ClassTypeFactory
      */
     private function __construct()
     {
+    }
+
+    public static function createPrimitiveTable(string $tableName, ReflectionNamedType $primitiveType): ClassType
+    {
+        $table = new ClassType($tableName);
+        $table->addImplement(MixedStorageInterface::class);
+        $table->addMethod('__construct')
+            ->addPromotedParameter('value')
+            ->setPublic()
+            ->setType($primitiveType->getName());
+        $table->addMethod('toOriginalObject')
+            ->setReturnType($primitiveType->getName())
+            ->setBody('return $this->value;');
+        return $table;
     }
 
     public static function createStorageTable(string $tableName, ReflectionClass $referencedObject): ClassType
