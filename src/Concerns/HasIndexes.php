@@ -18,16 +18,23 @@ trait HasIndexes
         $current = isset($this->_indexes) ? Utils::toArray($this->_indexes) : [];
         $offset = 0;
         $refProperty = 'ref_' . (new ReflectionClass($this))->getShortName();
-        foreach ($indexes as $search => $priority) {
+        $total = array_reduce(
+            $indexes,
+            function (float $carry, float $item) {
+                return $carry + $item;
+            },
+            0
+        );
+        foreach ($indexes as $search => $tf) {
             if (isset($current[$offset])) {
-                if ($current[$offset]->text !== $search || $current[$offset]->priority !== $priority) {
+                if ($current[$offset]->text !== $search || $current[$offset]->tf !== $tf) {
                     $current[$offset]->text = $search;
-                    $current[$offset]->priority = $priority;
+                    $current[$offset]->priority = 1;
                     $current[$offset]->idf = 1;
-                    $current[$offset]->tdf = 1;
+                    $current[$offset]->tf = $tf / $total;
                 }
             } else {
-                $current[$offset] = $this->getIndexTable()->newInstance($search, $priority);
+                $current[$offset] = $this->getIndexTable()->newInstance($search, 1, 1, $tf / $total);
             }
             
             $current[$offset]->$refProperty = $this;
