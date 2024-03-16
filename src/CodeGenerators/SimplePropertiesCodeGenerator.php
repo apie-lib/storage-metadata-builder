@@ -14,6 +14,9 @@ use Apie\StorageMetadataBuilder\Interfaces\RunGeneratedCodeContextInterface;
 use Apie\StorageMetadataBuilder\Mediators\GeneratedCode;
 use Apie\StorageMetadataBuilder\Mediators\GeneratedCodeContext;
 use Apie\TypeConverter\ReflectionTypeFactory;
+use DateTime;
+use DateTimeImmutable;
+use DateTimeInterface;
 use Nette\PhpGenerator\ClassType;
 use Nette\PhpGenerator\Parameter;
 
@@ -77,6 +80,9 @@ return $this->unserializedObject;'
         $nullable = '?';
         $declaredProperty = $table->addProperty($propertyName)
             ->setType($nullable . $scalar->value);
+        if ($scalar === ScalarType::STRING && in_array((string) $property->getType(), [DateTimeInterface::class, DateTimeImmutable::class, DateTime::class])) {
+            $declaredProperty->setType($nullable . DateTimeImmutable::class);
+        }
         switch ($scalar) {
             case ScalarType::ARRAY:
             case ScalarType::STDCLASS:
