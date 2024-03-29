@@ -1,11 +1,9 @@
 <?php
 namespace Apie\StorageMetadataBuilder\CodeGenerators;
 
-use Apie\Core\Permissions\PermissionInterface;
 use Apie\Core\Permissions\RequiresPermissionsInterface;
 use Apie\StorageMetadata\Attributes\AclLinkAttribute;
 use Apie\StorageMetadata\Attributes\ManyToOneAttribute;
-use Apie\StorageMetadata\Attributes\OneToManyAttribute;
 use Apie\StorageMetadataBuilder\Interfaces\BootGeneratedCodeInterface;
 use Apie\StorageMetadataBuilder\Interfaces\PostRunGeneratedCodeContextInterface;
 use Apie\StorageMetadataBuilder\Interfaces\RootObjectInterface;
