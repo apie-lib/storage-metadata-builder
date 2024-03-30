@@ -6,6 +6,8 @@ use Apie\Core\Enums\ScalarType;
 use Apie\Core\Identifiers\KebabCaseSlug;
 use Apie\Core\Metadata\Fields\FieldInterface;
 use Apie\Core\Metadata\MetadataFactory;
+use Apie\Core\Utils\ConverterUtils;
+use Apie\Core\ValueObjects\Interfaces\AllowsLargeStringsInterface;
 use Apie\StorageMetadata\Attributes\OneToOneAttribute;
 use Apie\StorageMetadata\Attributes\PropertyAttribute;
 use Apie\StorageMetadataBuilder\Interfaces\BootGeneratedCodeInterface;
@@ -19,6 +21,7 @@ use DateTimeImmutable;
 use DateTimeInterface;
 use Nette\PhpGenerator\ClassType;
 use Nette\PhpGenerator\Parameter;
+use ReflectionProperty;
 
 /**
  * Maps simple properties that require no additional tables.
@@ -94,8 +97,26 @@ return $this->unserializedObject;'
                     ->setValue(null); // fallthrough
                 // no break
             default:
-                $declaredProperty->addAttribute(PropertyAttribute::class, [$property->name, $property->getDeclaringClass()->name]);
+                $declaredProperty->addAttribute(
+                    PropertyAttribute::class,
+                    [
+                        $property->name,
+                        $property->getDeclaringClass()->name,
+                        $this->allowsLargeStrings($property)
+                    ]
+                );
         }
-            
+    }
+
+    private function allowsLargeStrings(ReflectionProperty $property): bool
+    {
+        if ('string' === ((string) $property->getType())) {
+            return true;
+        }
+        $class = ConverterUtils::toReflectionClass($property);
+        if (!$class) {
+            return false;
+        }
+        return in_array(AllowsLargeStringsInterface::class, $class->getInterfaceNames());
     }
 }

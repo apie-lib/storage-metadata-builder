@@ -14,7 +14,7 @@ class apie_resource__default_order__order_lines implements \Apie\StorageMetadata
 	#[Apie\StorageMetadata\Attributes\OrderAttribute]
 	public int $listOrder;
 
-	#[Apie\StorageMetadata\Attributes\PropertyAttribute('id', 'Apie\Fixtures\Entities\OrderLine')]
+	#[Apie\StorageMetadata\Attributes\PropertyAttribute('id', 'Apie\Fixtures\Entities\OrderLine', false)]
 	public ?string $apie_order_line_id;
 
 

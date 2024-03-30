@@ -19,10 +19,10 @@ class apie_resource__default_user_with_address implements \Apie\StorageMetadata\
 	#[Apie\StorageMetadata\Attributes\OneToOneAttribute('address', 'Apie\Fixtures\Entities\UserWithAddress')]
 	public ?apie_mixed_data $apie_user_with_address_address;
 
-	#[Apie\StorageMetadata\Attributes\PropertyAttribute('password', 'Apie\Fixtures\Entities\UserWithAddress')]
+	#[Apie\StorageMetadata\Attributes\PropertyAttribute('password', 'Apie\Fixtures\Entities\UserWithAddress', false)]
 	public ?string $apie_user_with_address_password;
 
-	#[Apie\StorageMetadata\Attributes\PropertyAttribute('id', 'Apie\Fixtures\Entities\UserWithAddress')]
+	#[Apie\StorageMetadata\Attributes\PropertyAttribute('id', 'Apie\Fixtures\Entities\UserWithAddress', false)]
 	public ?string $apie_user_with_address_id;
 
 	#[Apie\StorageMetadata\Attributes\OneToManyAttribute(null, 'apie_index_table')]

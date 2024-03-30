@@ -14,16 +14,16 @@ class apie_resource__other_animal implements Apie\StorageMetadata\Interfaces\Sto
 	#[Apie\StorageMetadata\Attributes\GetMethodAttribute('getId')]
 	public ?string $id;
 
-	#[Apie\StorageMetadata\Attributes\PropertyAttribute('id', 'Apie\Fixtures\Entities\Polymorphic\Animal')]
+	#[Apie\StorageMetadata\Attributes\PropertyAttribute('id', 'Apie\Fixtures\Entities\Polymorphic\Animal', false)]
 	public ?string $apie_animal_id;
 
-	#[Apie\StorageMetadata\Attributes\PropertyAttribute('poisonous', 'Apie\Fixtures\Entities\Polymorphic\Fish')]
+	#[Apie\StorageMetadata\Attributes\PropertyAttribute('poisonous', 'Apie\Fixtures\Entities\Polymorphic\Fish', false)]
 	public ?bool $apie_fish_poisonous;
 
-	#[Apie\StorageMetadata\Attributes\PropertyAttribute('starving', 'Apie\Fixtures\Entities\Polymorphic\Elephant')]
+	#[Apie\StorageMetadata\Attributes\PropertyAttribute('starving', 'Apie\Fixtures\Entities\Polymorphic\Elephant', false)]
 	public ?bool $apie_elephant_starving;
 
-	#[Apie\StorageMetadata\Attributes\PropertyAttribute('hasMilk', 'Apie\Fixtures\Entities\Polymorphic\Cow')]
+	#[Apie\StorageMetadata\Attributes\PropertyAttribute('hasMilk', 'Apie\Fixtures\Entities\Polymorphic\Cow', false)]
 	public ?bool $apie_cow_has_milk;
 
 	#[Apie\StorageMetadata\Attributes\OneToManyAttribute(null, 'apie_index_table')]
