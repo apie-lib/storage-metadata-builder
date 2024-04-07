@@ -6,8 +6,11 @@ use Apie\Core\Enums\ScalarType;
 use Apie\Core\Identifiers\KebabCaseSlug;
 use Apie\Core\Metadata\Fields\FieldInterface;
 use Apie\Core\Metadata\MetadataFactory;
+use Apie\Core\RegexUtils;
 use Apie\Core\Utils\ConverterUtils;
 use Apie\Core\ValueObjects\Interfaces\AllowsLargeStringsInterface;
+use Apie\Core\ValueObjects\Interfaces\HasRegexValueObjectInterface;
+use Apie\Core\ValueObjects\Interfaces\LengthConstraintStringValueObjectInterface;
 use Apie\StorageMetadata\Attributes\OneToOneAttribute;
 use Apie\StorageMetadata\Attributes\PropertyAttribute;
 use Apie\StorageMetadataBuilder\Interfaces\BootGeneratedCodeInterface;
@@ -117,6 +120,17 @@ return $this->unserializedObject;'
         if (!$class) {
             return false;
         }
-        return in_array(AllowsLargeStringsInterface::class, $class->getInterfaceNames());
+        $interfaceNames = $class->getInterfaceNames();
+        if (in_array(AllowsLargeStringsInterface::class, $interfaceNames)) {
+            return true;
+        }
+        if (in_array(LengthConstraintStringValueObjectInterface::class, $interfaceNames)) {
+            return $class->getMethod('minStringLength')->invoke(null) > 127;
+        }
+        if (in_array(HasRegexValueObjectInterface::class, $interfaceNames)) {
+            $regex = $class->getMethod('getRegularExpression')->invoke(null);
+            return RegexUtils::getMaximumAcceptedStringLengthOfRegularExpression($regex, true) > 127;
+        }
+        return false;
     }
 }
