@@ -125,7 +125,7 @@ return $this->unserializedObject;'
             return true;
         }
         if (in_array(LengthConstraintStringValueObjectInterface::class, $interfaceNames)) {
-            return $class->getMethod('minStringLength')->invoke(null) > 127;
+            return $class->getMethod('maxStringLength')->invoke(null) > 127;
         }
         if (in_array(HasRegexValueObjectInterface::class, $interfaceNames)) {
             $regex = $class->getMethod('getRegularExpression')->invoke(null);
