@@ -95,7 +95,7 @@ return $this->unserializedObject;'
             case ScalarType::MIXED:
                 $declaredProperty->setType($nullable . 'apie_mixed_data')->addAttribute(OneToOneAttribute::class, [$property->name, $property->getDeclaringClass()->name]);
                 break;
-            case ScalarType::NULL:
+            case ScalarType::NULLVALUE:
                 $declaredProperty->setType(null)
                     ->setValue(null); // fallthrough
                 // no break

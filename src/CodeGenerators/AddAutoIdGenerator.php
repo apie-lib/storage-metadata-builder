@@ -43,7 +43,6 @@ class AddAutoIdGenerator implements RunGeneratedCodeContextInterface
             $currentTable->addProperty($propertyName)
                 ->setType($type)
                 ->addAttribute(OneToOneAttribute::class, [$property->name]);
-
         }
     }
 }
