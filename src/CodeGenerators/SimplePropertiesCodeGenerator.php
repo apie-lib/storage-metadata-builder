@@ -24,7 +24,9 @@ use DateTimeImmutable;
 use DateTimeInterface;
 use Nette\PhpGenerator\ClassType;
 use Nette\PhpGenerator\Parameter;
+use Psr\Http\Message\UploadedFileInterface;
 use ReflectionProperty;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 /**
  * Maps simple properties that require no additional tables.
@@ -88,6 +90,10 @@ return $this->unserializedObject;'
             ->setType($nullable . $scalar->value);
         if ($scalar === ScalarType::STRING && in_array((string) $property->getType(), [DateTimeInterface::class, DateTimeImmutable::class, DateTime::class])) {
             $declaredProperty->setType($nullable . DateTimeImmutable::class);
+        }
+        if (in_array((string) $property->getType(), [UploadedFileInterface::class, UploadedFile::class])) {
+            $declaredProperty->setType($nullable . 'string');
+            $scalar = ScalarType::STRING;
         }
         switch ($scalar) {
             case ScalarType::ARRAY:
