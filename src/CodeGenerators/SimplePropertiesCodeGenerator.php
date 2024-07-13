@@ -122,12 +122,17 @@ return $this->unserializedObject;'
         if ('string' === ((string) $property->getType())) {
             return true;
         }
+        if (in_array((string) $property->getType(), [UploadedFileInterface::class, UploadedFile::class])) {
+            return true;
+        }
         $class = ConverterUtils::toReflectionClass($property);
         if (!$class) {
             return false;
         }
         $interfaceNames = $class->getInterfaceNames();
-        if (in_array(AllowsLargeStringsInterface::class, $interfaceNames)) {
+        
+        if (in_array(AllowsLargeStringsInterface::class, $interfaceNames)
+            || in_array(UploadedFileInterface::class, $interfaceNames)) {
             return true;
         }
         if (in_array(LengthConstraintStringValueObjectInterface::class, $interfaceNames)) {
