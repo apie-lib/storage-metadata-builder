@@ -11,7 +11,6 @@ use Apie\StorageMetadataBuilder\Factories\ClassTypeFactory;
 use Apie\StorageMetadataBuilder\Interfaces\RunGeneratedCodeContextInterface;
 use Apie\StorageMetadataBuilder\Mediators\GeneratedCodeContext;
 use Psr\Http\Message\UploadedFileInterface;
-use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 /**
  * Creates the one to many relations for lists.
@@ -26,7 +25,7 @@ final class SubObjectCodeGenerator implements RunGeneratedCodeContextInterface
         $property = $generatedCodeContext->getCurrentProperty();
         $class = $property ? ConverterUtils::toReflectionClass($property) : null;
         $currentTable = $generatedCodeContext->getCurrentTable();
-        if (null === $class || null === $currentTable || in_array((string) $property->getType(), [UploadedFileInterface::class, UploadedFile::class])) {
+        if (null === $class || null === $currentTable || in_array((string) $property->getType(), [UploadedFileInterface::class])) {
             return;
         }
         $metadata = MetadataFactory::getMetadataStrategyForType($property->getType())

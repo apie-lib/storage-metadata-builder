@@ -26,7 +26,6 @@ use Nette\PhpGenerator\ClassType;
 use Nette\PhpGenerator\Parameter;
 use Psr\Http\Message\UploadedFileInterface;
 use ReflectionProperty;
-use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 /**
  * Maps simple properties that require no additional tables.
@@ -91,7 +90,7 @@ return $this->unserializedObject;'
         if ($scalar === ScalarType::STRING && in_array((string) $property->getType(), [DateTimeInterface::class, DateTimeImmutable::class, DateTime::class])) {
             $declaredProperty->setType($nullable . DateTimeImmutable::class);
         }
-        if (in_array((string) $property->getType(), [UploadedFileInterface::class, UploadedFile::class])) {
+        if (in_array((string) $property->getType(), [UploadedFileInterface::class])) {
             $declaredProperty->setType($nullable . 'string');
             $scalar = ScalarType::STRING;
         }
@@ -122,7 +121,7 @@ return $this->unserializedObject;'
         if ('string' === ((string) $property->getType())) {
             return true;
         }
-        if (in_array((string) $property->getType(), [UploadedFileInterface::class, UploadedFile::class])) {
+        if (in_array((string) $property->getType(), [UploadedFileInterface::class])) {
             return true;
         }
         $class = ConverterUtils::toReflectionClass($property);
