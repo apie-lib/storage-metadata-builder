@@ -2,6 +2,7 @@
 namespace Apie\StorageMetadataBuilder\Mediators;
 
 use Apie\Core\Actions\BoundedContextEntityTuple;
+use Apie\Core\FileStorage\StoredFile;
 use Apie\Core\Identifiers\KebabCaseSlug;
 use Apie\Core\Utils\ConverterUtils;
 use Apie\StorageMetadata\Attributes\ManyToOneAttribute;
@@ -11,11 +12,16 @@ use Apie\StorageMetadata\Attributes\ParentAttribute;
 use Apie\StorageMetadataBuilder\Lists\ReflectionPropertyList;
 use Apie\TypeConverter\ReflectionTypeFactory;
 use Nette\PhpGenerator\ClassType;
+use Psr\Http\Message\UploadedFileInterface;
 use ReflectionClass;
 use ReflectionProperty;
 
 final class GeneratedCodeContext
 {
+    private const INTERFACE_LINKS = [
+        UploadedFileInterface::class => StoredFile::class,
+    ];
+
     private array $visited = [];
 
     private array $visitedTables = [];
@@ -120,8 +126,12 @@ final class GeneratedCodeContext
         }
         $this->generatedCode->generatedCodeHashmap[$tableName] = $table;
         if ($this->currentObject !== null) {
-            foreach (ReflectionPropertyList::createFromClass($this->currentObject) as $property) {
-                if ($property->isStatic()) {
+            $object = $this->currentObject;
+            if (isset(self::INTERFACE_LINKS[$object->name])) {
+                $object = new ReflectionClass(self::INTERFACE_LINKS[$object->name]);
+            }
+            foreach (ReflectionPropertyList::createFromClass($object) as $property) {
+                if ($property->isStatic() || $this->isBlacklisted($property)) {
                     continue;
                 }
                 $clone = clone $this;
@@ -134,6 +144,14 @@ final class GeneratedCodeContext
                 $this->generatedCode->addTodo($clone);
             }
         }
+    }
+
+    private function isBlacklisted(ReflectionProperty $property): bool
+    {
+        if ($property->getDeclaringClass()->name === StoredFile::class) {
+            return in_array($property->name, ['internalFile', 'removeOnDestruct', 'resource', 'content', 'movedPath']);
+        }
+        return false;
     }
 
     public function getPrefix(string $prefix = ''): string
