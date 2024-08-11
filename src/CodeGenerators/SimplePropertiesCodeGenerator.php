@@ -118,10 +118,11 @@ return $this->unserializedObject;'
 
     private function allowsLargeStrings(ReflectionProperty $property): bool
     {
-        if ('string' === ((string) $property->getType())) {
+        $propertyTypeAsString = ltrim((string) $property->getType(), '?');
+        if ('string' === $propertyTypeAsString) {
             return true;
         }
-        if (in_array((string) $property->getType(), [UploadedFileInterface::class])) {
+        if (in_array($propertyTypeAsString, [UploadedFileInterface::class])) {
             return true;
         }
         $class = ConverterUtils::toReflectionClass($property);
