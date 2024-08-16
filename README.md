@@ -6,7 +6,7 @@
 
 
 
- [![Latest Stable Version](http://poser.pugx.org/apie/storage-metadata-builder/v)](https://packagist.org/packages/apie/storage-metadata-builder) [![Total Downloads](http://poser.pugx.org/apie/storage-metadata-builder/downloads)](https://packagist.org/packages/apie/storage-metadata-builder) [![Latest Unstable Version](http://poser.pugx.org/apie/storage-metadata-builder/v/unstable)](https://packagist.org/packages/apie/storage-metadata-builder) [![License](http://poser.pugx.org/apie/storage-metadata-builder/license)](https://packagist.org/packages/apie/storage-metadata-builder) [![PHP Composer](https://apie-lib.github.io/projectCoverage/coverage-storage-metadata-builder.svg)](https://apie-lib.github.io/projectCoverage/app/packages/storage-metadata-builder/index.html)  
+ [![Latest Stable Version](https://poser.pugx.org/apie/storage-metadata-builder/v)](https://packagist.org/packages/apie/storage-metadata-builder) [![Total Downloads](https://poser.pugx.org/apie/storage-metadata-builder/downloads)](https://packagist.org/packages/apie/storage-metadata-builder) [![Latest Unstable Version](https://poser.pugx.org/apie/storage-metadata-builder/v/unstable)](https://packagist.org/packages/apie/storage-metadata-builder) [![License](https://poser.pugx.org/apie/storage-metadata-builder/license)](https://packagist.org/packages/apie/storage-metadata-builder) [![PHP Composer](https://apie-lib.github.io/projectCoverage/coverage-storage-metadata-builder.svg)](https://apie-lib.github.io/projectCoverage/storage-metadata-builder/index.html)  
 
 [![PHP Composer](https://github.com/apie-lib/storage-metadata-builder/actions/workflows/php.yml/badge.svg?event=push)](https://github.com/apie-lib/storage-metadata-builder/actions/workflows/php.yml)
 
