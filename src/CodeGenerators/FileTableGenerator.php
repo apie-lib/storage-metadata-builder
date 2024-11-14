@@ -34,7 +34,7 @@ final class FileTableGenerator implements RunGeneratedCodeContextInterface
             $tableName = $generatedCodeContext->getPrefix('apie_resource_');
             $table = ClassTypeFactory::createStorageTable($tableName, new ReflectionClass(StoredFile::class));
             $table->addProperty('storage')
-                ->setType(FileStorageInterface::class)
+                ->setType('?' . FileStorageInterface::class)
                 ->addAttribute(StorageMappingAttribute::class);
             $properties = [
                 'storagePath' => ['getStoragePath', 'storagePath', $class->name, 'allowLargeStrings' => true],
@@ -66,7 +66,7 @@ final class FileTableGenerator implements RunGeneratedCodeContextInterface
                 . '_'
                 . str_replace('-', '_', (string) KebabCaseSlug::fromClass($property));
             $currentTable->addProperty($propertyName)
-                ->setType($tableName)
+                ->setType('?' . $tableName)
                 ->addAttribute(OneToOneAttribute::class, [$property->name, null, $property->getDeclaringClass()->name]);
         }
     }

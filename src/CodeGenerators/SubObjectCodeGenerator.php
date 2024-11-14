@@ -44,7 +44,7 @@ final class SubObjectCodeGenerator implements RunGeneratedCodeContextInterface
             $table = ClassTypeFactory::createStorageTable($tableName, $class);
             $generatedCodeContext->withCurrentObject($class)->iterateOverTable($table);
             $currentTable->addProperty($propertyName)
-                ->setType($tableName)
+                ->setType(($property->getType()->allowsNull() ? '?' : '') . $tableName)
                 ->addAttribute(OneToOneAttribute::class, [$property->name, null, $property->getDeclaringClass()->name]);
         }
     }
