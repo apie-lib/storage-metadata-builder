@@ -11,6 +11,7 @@ use Apie\Core\Utils\ConverterUtils;
 use Apie\Core\ValueObjects\Interfaces\AllowsLargeStringsInterface;
 use Apie\Core\ValueObjects\Interfaces\HasRegexValueObjectInterface;
 use Apie\Core\ValueObjects\Interfaces\LengthConstraintStringValueObjectInterface;
+use Apie\Core\ValueObjects\IsPasswordValueObject;
 use Apie\StorageMetadata\Attributes\OneToOneAttribute;
 use Apie\StorageMetadata\Attributes\PropertyAttribute;
 use Apie\StorageMetadataBuilder\Interfaces\BootGeneratedCodeInterface;
@@ -136,11 +137,17 @@ return $this->unserializedObject;'
             return true;
         }
         if (in_array(LengthConstraintStringValueObjectInterface::class, $interfaceNames)) {
-            return $class->getMethod('maxStringLength')->invoke(null) > 127;
+            $maxLength = $class->getMethod('maxStringLength')->invoke(null);
+            return $maxLength > 127 || $maxLength === null;
+        }
+        if (in_array(IsPasswordValueObject::class, $class->getTraitNames())) {
+            $maxLength = $class->getMethod('getMaxLength')->invoke(null);
+            return $maxLength > 127;
         }
         if (in_array(HasRegexValueObjectInterface::class, $interfaceNames)) {
             $regex = $class->getMethod('getRegularExpression')->invoke(null);
-            return RegexUtils::getMaximumAcceptedStringLengthOfRegularExpression($regex, true) > 127;
+            $maxLength = RegexUtils::getMaximumAcceptedStringLengthOfRegularExpression($regex, true);
+            return $maxLength > 127 || $maxLength === null;
         }
         return false;
     }
