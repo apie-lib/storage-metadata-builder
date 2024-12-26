@@ -15,9 +15,7 @@ use PHPUnit\Framework\TestCase;
 
 class StorageMetadataBuilderTest extends TestCase
 {
-    /**
-     * @test
-     */
+    #[\PHPUnit\Framework\Attributes\Test]
     public function it_can_create_storage_objects()
     {
         $simple = new SimplePropertiesCodeGenerator();
