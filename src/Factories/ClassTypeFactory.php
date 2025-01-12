@@ -23,6 +23,20 @@ final class ClassTypeFactory
     {
     }
 
+    public static function createIndexTable(string $tableName)
+    {
+        $class = new ClassType($tableName);
+        $constructor = $class->addMethod('__construct');
+        $constructor->addPromotedParameter('text')
+            ->setType('string');
+        $constructor->addPromotedParameter('priority')
+            ->setType('int');
+        $constructor->addPromotedParameter('idf', 0)
+            ->setType('float');
+        $constructor->addPromotedParameter('tf', 0)
+            ->setType('float');
+        return $class;
+    }
     public static function createPrimitiveTable(string $tableName, ReflectionNamedType $primitiveType): ClassType
     {
         $table = new ClassType($tableName);
