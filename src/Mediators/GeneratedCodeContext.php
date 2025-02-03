@@ -57,7 +57,7 @@ final class GeneratedCodeContext
         return $res;
     }
 
-    public function findInverseProperty(string $tableName): ?string
+    public function findInverseProperty(string $tableName, string $currentClass): ?string
     {
         $classType = $this->generatedCode->generatedCodeHashmap[$tableName] ?? null;
         if (!$classType) {
@@ -67,7 +67,11 @@ final class GeneratedCodeContext
         foreach ($classType->getProperties() as $property) {
             foreach ($property->getAttributes() as $attribute) {
                 if ($attribute->getName() === OneToManyAttribute::class) {
-                    return $property->getName();
+                    $arguments = $attribute->getArguments();
+                    $storageClass = $arguments['storageClass'] ?? $arguments[1];
+                    if ($storageClass === $currentClass) {
+                        return $property->getName();
+                    }
                 }
             }
         }
