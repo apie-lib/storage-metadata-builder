@@ -2,6 +2,7 @@
 namespace Apie\StorageMetadataBuilder\Lists;
 
 use Apie\Core\Lists\ItemHashmap;
+use Apie\Core\Lists\StringHashmap;
 use Nette\PhpGenerator\ClassType;
 
 final class GeneratedCodeHashmap extends ItemHashmap
@@ -20,5 +21,14 @@ final class GeneratedCodeHashmap extends ItemHashmap
             }
         }
         return new self($internal);
+    }
+
+    public function toStringHashmap(): StringHashmap
+    {
+        $code = [];
+        foreach ($this as $filename => $code) {
+            $code[$filename] = (string) $code;
+        }
+        return new StringHashmap($code);
     }
 }

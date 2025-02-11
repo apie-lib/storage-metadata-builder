@@ -3,6 +3,9 @@
 class apie_index_table
 {
 	#[Apie\StorageMetadata\Attributes\ManyToOneAttribute('_indexes')]
+	public ?apie_resource__core_generated_code_timestamp $ref_apie_resource__core_generated_code_timestamp = null;
+
+	#[Apie\StorageMetadata\Attributes\ManyToOneAttribute('_indexes')]
 	public ?apie_resource__other_animal $ref_apie_resource__other_animal = null;
 
 	#[Apie\StorageMetadata\Attributes\ManyToOneAttribute('_indexes')]
