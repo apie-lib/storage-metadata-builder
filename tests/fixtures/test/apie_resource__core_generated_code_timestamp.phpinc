@@ -1,7 +1,7 @@
 <?php
 // @codingStandardsIgnoreStart
 /**
- * Apie\DoctrineEntityConverter\Resources\GeneratedCodeTimestamp
+ * Apie\StorageMetadataBuilder\Resources\GeneratedCodeTimestamp
  */
 class apie_resource__core_generated_code_timestamp implements \Apie\StorageMetadata\Interfaces\StorageDtoInterface, Apie\StorageMetadataBuilder\Interfaces\RootObjectInterface, Apie\StorageMetadataBuilder\Interfaces\HasIndexInterface
 {
@@ -19,11 +19,11 @@ class apie_resource__core_generated_code_timestamp implements \Apie\StorageMetad
 	#[Apie\StorageMetadata\Attributes\OneToManyAttribute(
 		'codeMap',
 		'apie_resource__core_generated_code_timestamp__code_map',
-		'Apie\DoctrineEntityConverter\Resources\GeneratedCodeTimestamp',
+		'Apie\StorageMetadataBuilder\Resources\GeneratedCodeTimestamp',
 	)]
 	public $apie_generated_code_timestamp_code_map;
 
-	#[Apie\StorageMetadata\Attributes\PropertyAttribute('id', 'Apie\DoctrineEntityConverter\Resources\GeneratedCodeTimestamp', false)]
+	#[Apie\StorageMetadata\Attributes\PropertyAttribute('id', 'Apie\StorageMetadataBuilder\Resources\GeneratedCodeTimestamp', false)]
 	public ?string $apie_generated_code_timestamp_id;
 
 	#[Apie\StorageMetadata\Attributes\OneToManyAttribute(null, 'apie_index_table')]
@@ -32,7 +32,7 @@ class apie_resource__core_generated_code_timestamp implements \Apie\StorageMetad
 
 	public static function getClassReference(): ReflectionClass
 	{
-		return new \ReflectionClass(\Apie\DoctrineEntityConverter\Resources\GeneratedCodeTimestamp::class);
+		return new \ReflectionClass(\Apie\StorageMetadataBuilder\Resources\GeneratedCodeTimestamp::class);
 	}
 
 

@@ -25,10 +25,10 @@ final class GeneratedCodeHashmap extends ItemHashmap
 
     public function toStringHashmap(): StringHashmap
     {
-        $code = [];
+        $list = [];
         foreach ($this as $filename => $code) {
-            $code[$filename] = (string) $code;
+            $list[$filename] = (string) $code;
         }
-        return new StringHashmap($code);
+        return new StringHashmap($list);
     }
 }
