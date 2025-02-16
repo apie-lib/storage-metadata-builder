@@ -13,9 +13,6 @@ class apie_resource__core_generated_code_timestamp implements \Apie\StorageMetad
 	#[Apie\StorageMetadata\Attributes\GetSearchIndexAttribute('getId')]
 	public array $search_id;
 
-	#[Apie\StorageMetadata\Attributes\GetSearchIndexAttribute('codeMap')]
-	public array $search_codeMap;
-
 	#[Apie\StorageMetadata\Attributes\OneToManyAttribute(
 		'codeMap',
 		'apie_resource__core_generated_code_timestamp__code_map',
