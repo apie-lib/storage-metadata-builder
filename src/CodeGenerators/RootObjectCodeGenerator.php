@@ -1,6 +1,7 @@
 <?php
 namespace Apie\StorageMetadataBuilder\CodeGenerators;
 
+use Apie\Core\Attributes\SearchFilterOption;
 use Apie\Core\Context\ApieContext;
 use Apie\Core\Metadata\Fields\GetterMethod;
 use Apie\Core\Metadata\Fields\PublicProperty;
@@ -31,6 +32,14 @@ final class RootObjectCodeGenerator implements RunGeneratedCodeContextInterface
             if ($fieldDefinition instanceof GetterMethod || $fieldDefinition instanceof PublicProperty) {
                 $searchProperty = $table->addProperty('search_' . $fieldName);
                 $searchProperty->setType('array');
+                $enabled = true;
+                foreach ($fieldDefinition->getAttributes(SearchFilterOption::class) as $attr) {
+                    $enabled = $enabled && $attr->enabled;
+                }
+                if (!$enabled) {
+                    $table->removeProperty($searchProperty->getName());
+                    continue;
+                }
                 if ($fieldDefinition instanceof GetterMethod) {
                     $searchProperty->addAttribute(GetSearchIndexAttribute::class, [$fieldDefinition->getReflectionMethod()->name]);
                 } elseif ($fieldDefinition instanceof PublicProperty) {

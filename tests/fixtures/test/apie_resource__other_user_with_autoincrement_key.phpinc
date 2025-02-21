@@ -16,9 +16,6 @@ class apie_resource__other_user_with_autoincrement_key implements \Apie\StorageM
 	#[Apie\StorageMetadata\Attributes\GetSearchIndexAttribute('getAddress')]
 	public array $search_address;
 
-	#[Apie\StorageMetadata\Attributes\GetSearchIndexAttribute('getPassword')]
-	public array $search_password;
-
 	#[Apie\StorageMetadata\Attributes\OneToOneAttribute('address', 'Apie\Fixtures\Entities\UserWithAutoincrementKey')]
 	public ?apie_mixed_data $apie_user_with_autoincrement_key_address;
 
