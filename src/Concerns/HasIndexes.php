@@ -8,7 +8,7 @@ use ReflectionProperty;
 
 trait HasIndexes
 {
-    abstract public function getIndexTable(): ReflectionClass;
+    abstract public static function getIndexTable(): ReflectionClass;
 
     /**
      * @param array<string, int> $indexes
@@ -34,7 +34,7 @@ trait HasIndexes
                     $current[$offset]->tf = $tf / $total;
                 }
             } else {
-                $current[$offset] = $this->getIndexTable()->newInstance($search, 1, 1, $tf / $total);
+                $current[$offset] = static::getIndexTable()->newInstance($search, 1, 1, $tf / $total);
             }
             
             $current[$offset]->$refProperty = $this;

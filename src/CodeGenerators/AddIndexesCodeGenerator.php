@@ -48,6 +48,7 @@ class AddIndexesCodeGenerator implements BootGeneratedCodeInterface, PostRunGene
             $code->addTrait('\\' . HasIndexes::class);
             $code->addImplement(HasIndexInterface::class);
             $code->addMethod('getIndexTable')
+                ->setStatic(true)
                 ->setReturnType('ReflectionClass')
                 ->setBody('return new \\ReflectionClass(' . $indexTable->getName() . '::class);');
             $code->addProperty('_indexes')

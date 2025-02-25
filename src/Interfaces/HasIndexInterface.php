@@ -5,7 +5,7 @@ use ReflectionClass;
 
 interface HasIndexInterface
 {
-    public function getIndexTable(): ReflectionClass;
+    public static function getIndexTable(): ReflectionClass;
 
     /**
      * @param array<string, int> $indexes

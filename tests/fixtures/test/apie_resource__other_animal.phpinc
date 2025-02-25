@@ -36,7 +36,7 @@ class apie_resource__other_animal implements Apie\StorageMetadata\Interfaces\Sto
 	}
 
 
-	public function getIndexTable(): ReflectionClass
+	public static function getIndexTable(): ReflectionClass
 	{
 		return new \ReflectionClass(apie_index_table::class);
 	}

@@ -35,7 +35,7 @@ class apie_resource__default_user_with_address implements \Apie\StorageMetadata\
 	}
 
 
-	public function getIndexTable(): ReflectionClass
+	public static function getIndexTable(): ReflectionClass
 	{
 		return new \ReflectionClass(apie_index_table::class);
 	}

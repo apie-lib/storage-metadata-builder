@@ -33,7 +33,7 @@ class apie_resource__core_generated_code_timestamp implements \Apie\StorageMetad
 	}
 
 
-	public function getIndexTable(): ReflectionClass
+	public static function getIndexTable(): ReflectionClass
 	{
 		return new \ReflectionClass(apie_index_table::class);
 	}
