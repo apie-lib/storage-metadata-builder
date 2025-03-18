@@ -1,0 +1,22 @@
+<?php
+// @codingStandardsIgnoreStart
+class apie_resource__core_generated_code_timestamp__code_map implements Apie\StorageMetadataBuilder\Interfaces\MixedStorageInterface
+{
+	#[Apie\StorageMetadata\Attributes\ParentAttribute]
+	public apie_resource__core_generated_code_timestamp $parent;
+
+	#[Apie\StorageMetadata\Attributes\OrderAttribute]
+	public string $listOrder;
+
+
+	public function __construct(
+		public string $value,
+	) {
+	}
+
+
+	public function toOriginalObject(): string
+	{
+		return $this->value;
+	}
+}

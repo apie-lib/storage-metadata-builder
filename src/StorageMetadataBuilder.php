@@ -7,6 +7,7 @@ use Apie\StorageMetadataBuilder\Interfaces\PostRunGeneratedCodeContextInterface;
 use Apie\StorageMetadataBuilder\Interfaces\RunGeneratedCodeContextInterface;
 use Apie\StorageMetadataBuilder\Lists\GeneratedCodeHashmap;
 use Apie\StorageMetadataBuilder\Mediators\GeneratedCode;
+use Apie\StorageMetadataBuilder\Mediators\GeneratedCodeContext;
 
 final class StorageMetadataBuilder
 {
@@ -29,6 +30,9 @@ final class StorageMetadataBuilder
         while ($code->hasTodos()) {
             $context = $code->getNextTodo();
             $this->runGeneratedCode->run($context);
+        }
+        if (!isset($context)) {
+            $context = new GeneratedCodeContext($code, null);
         }
         $this->postRunGeneratedCode->postRun($context);
 

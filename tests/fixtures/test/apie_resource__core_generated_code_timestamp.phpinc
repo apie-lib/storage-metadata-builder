@@ -1,0 +1,40 @@
+<?php
+// @codingStandardsIgnoreStart
+/**
+ * Apie\StorageMetadataBuilder\Resources\GeneratedCodeTimestamp
+ */
+class apie_resource__core_generated_code_timestamp implements \Apie\StorageMetadata\Interfaces\StorageDtoInterface, Apie\StorageMetadataBuilder\Interfaces\RootObjectInterface, Apie\StorageMetadataBuilder\Interfaces\HasIndexInterface
+{
+	use \Apie\StorageMetadataBuilder\Concerns\HasIndexes;
+
+	#[Apie\StorageMetadata\Attributes\GetMethodAttribute('getId')]
+	public ?string $id;
+
+	#[Apie\StorageMetadata\Attributes\GetSearchIndexAttribute('getId')]
+	public array $search_id;
+
+	#[Apie\StorageMetadata\Attributes\OneToManyAttribute(
+		'codeMap',
+		'apie_resource__core_generated_code_timestamp__code_map',
+		'Apie\StorageMetadataBuilder\Resources\GeneratedCodeTimestamp',
+	)]
+	public $apie_generated_code_timestamp_code_map;
+
+	#[Apie\StorageMetadata\Attributes\PropertyAttribute('id', 'Apie\StorageMetadataBuilder\Resources\GeneratedCodeTimestamp', false)]
+	public ?string $apie_generated_code_timestamp_id;
+
+	#[Apie\StorageMetadata\Attributes\OneToManyAttribute(null, 'apie_index_table')]
+	public array $_indexes;
+
+
+	public static function getClassReference(): ReflectionClass
+	{
+		return new \ReflectionClass(\Apie\StorageMetadataBuilder\Resources\GeneratedCodeTimestamp::class);
+	}
+
+
+	public static function getIndexTable(): ReflectionClass
+	{
+		return new \ReflectionClass(apie_index_table::class);
+	}
+}
