@@ -1,6 +1,7 @@
 <?php
 namespace Apie\StorageMetadataBuilder\CodeGenerators;
 
+use Apie\Core\Attributes\StoreOptions;
 use Apie\Core\Context\ApieContext;
 use Apie\Core\Enums\ScalarType;
 use Apie\Core\Identifiers\KebabCaseSlug;
@@ -81,11 +82,18 @@ return $this->unserializedObject;'
             $property->getType() ?? ReflectionTypeFactory::createReflectionType('mixed')
         )->getResultMetadata(new ApieContext());
         $scalar = $metadata->toScalarType(true);
+    
         if ($table->hasProperty($propertyName)) {
             return;
         }
         $nullable = (($metadata instanceof FieldInterface ? $metadata->allowsNull() : false) ? '?' : '');
         $nullable = '?';
+        foreach ($property->getAttributes(StoreOptions::class) as $attribute) {
+            $options = $attribute->newInstance();
+            if ($options->alwaysMixedData) {
+                $scalar = ScalarType::MIXED;
+            }
+        }
         $declaredProperty = $table->addProperty($propertyName)
             ->setType($nullable . $scalar->value);
         if ($scalar === ScalarType::STRING && in_array((string) $property->getType(), [DateTimeInterface::class, DateTimeImmutable::class, DateTime::class])) {
