@@ -1,0 +1,22 @@
+<?php
+// @codingStandardsIgnoreStart
+class apie_resource__default_order__optional_tags implements Apie\StorageMetadataBuilder\Interfaces\MixedStorageInterface
+{
+	#[Apie\StorageMetadata\Attributes\ParentAttribute]
+	public apie_resource__default_order $parent;
+
+	#[Apie\StorageMetadata\Attributes\OrderAttribute]
+	public int $listOrder;
+
+
+	public function __construct(
+		public string $value,
+	) {
+	}
+
+
+	public function toOriginalObject(): string
+	{
+		return $this->value;
+	}
+}

@@ -18,15 +18,28 @@ class apie_resource__default_order implements \Apie\StorageMetadata\Interfaces\S
 
 	#[Apie\StorageMetadata\Attributes\GetSearchIndexAttribute('optionalTags')]
 	public array $search_optionalTags;
+	public bool $mute_order_order_lines = true;
 
-	#[Apie\StorageMetadata\Attributes\OneToManyAttribute('orderLines', 'apie_resource__default_order__order_lines', 'Apie\Fixtures\Entities\Order')]
+	#[Apie\StorageMetadata\Attributes\OneToManyAttribute(
+		'orderLines',
+		'apie_resource__default_order__order_lines',
+		'Apie\Fixtures\Entities\Order',
+		null,
+		'mute_order_order_lines',
+	)]
 	public $apie_order_order_lines;
 
 	#[Apie\StorageMetadata\Attributes\PropertyAttribute('id', 'Apie\Fixtures\Entities\Order', false)]
 	public ?string $apie_order_id;
+	public bool $null_order_optional_tags = true;
 
-	#[Apie\StorageMetadata\Attributes\OneToOneAttribute('optionalTags', 'Apie\Fixtures\Entities\Order')]
-	public ?apie_mixed_data $apie_order_optional_tags;
+	#[Apie\StorageMetadata\Attributes\OneToManyAttribute(
+		'optionalTags',
+		'apie_resource__default_order__optional_tags',
+		'Apie\Fixtures\Entities\Order',
+		'null_order_optional_tags',
+	)]
+	public $apie_order_optional_tags;
 
 	#[Apie\StorageMetadata\Attributes\OneToOneAttribute('orderStatus', 'Apie\Fixtures\Entities\Order')]
 	public ?apie_mixed_data $apie_order_order_status;
