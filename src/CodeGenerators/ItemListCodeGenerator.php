@@ -87,7 +87,7 @@ final class ItemListCodeGenerator implements RunGeneratedCodeContextInterface
             }
             if ($property->getType() === null || $property->getType()->allowsNull()) {
                 $nullableFieldName = preg_replace('/^apie_/', 'null_', $propertyName);
-            }   
+            }
             $tableName = $generatedCodeContext->getPrefix('apie_resource_');
             $arrayType = $class->getMethod('offsetGet')->getReturnType();
             $scalar = MetadataFactory::getScalarForType($arrayType, $arrayType->allowsNull());
