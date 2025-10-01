@@ -6,6 +6,7 @@ use Apie\StorageMetadataBuilder\ChainedBootGeneratedCode;
 use Apie\StorageMetadataBuilder\ChainedGeneratedCodeContext;
 use Apie\StorageMetadataBuilder\ChainedPostGeneratedCodeContext;
 use Apie\StorageMetadataBuilder\CodeGenerators\AddIndexesCodeGenerator;
+use Apie\StorageMetadataBuilder\CodeGenerators\DecimalCodeGenerator;
 use Apie\StorageMetadataBuilder\CodeGenerators\ItemListCodeGenerator;
 use Apie\StorageMetadataBuilder\CodeGenerators\RootObjectCodeGenerator;
 use Apie\StorageMetadataBuilder\CodeGenerators\SimplePropertiesCodeGenerator;
@@ -28,6 +29,7 @@ class StorageMetadataBuilderTest extends TestCase
             ),
             new ChainedGeneratedCodeContext(
                 new ItemListCodeGenerator(),
+                new DecimalCodeGenerator(),
                 $simple,
                 new RootObjectCodeGenerator()
             ),
