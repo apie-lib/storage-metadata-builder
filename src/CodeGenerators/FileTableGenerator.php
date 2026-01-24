@@ -79,7 +79,7 @@ final class FileTableGenerator implements RunGeneratedCodeContextInterface
         if (in_array(UploadedFileInterface::class, $class->getInterfaceNames())) {
             // TODO: is this still needed?
             $tableName = $generatedCodeContext->getPrefix('apie_resource_');
-            $table = ClassTypeFactory::createStorageTable($tableName, new ReflectionClass(StoredFile::class));
+            $table = ClassTypeFactory::createStorageTable($tableName, $class);
             $table->addProperty('storage')
                 ->setType('?' . FileStorageInterface::class)
                 ->addAttribute(StorageMappingAttribute::class);
