@@ -12,6 +12,7 @@ use Apie\Core\Utils\ConverterUtils;
 use Apie\Core\ValueObjects\Interfaces\AllowsLargeStringsInterface;
 use Apie\Core\ValueObjects\Interfaces\HasRegexValueObjectInterface;
 use Apie\Core\ValueObjects\Interfaces\LengthConstraintStringValueObjectInterface;
+use Apie\Core\ValueObjects\Interfaces\LimitedOptionsInterface;
 use Apie\Core\ValueObjects\IsPasswordValueObject;
 use Apie\StorageMetadata\Attributes\OneToOneAttribute;
 use Apie\StorageMetadata\Attributes\PropertyAttribute;
@@ -156,6 +157,14 @@ return $this->unserializedObject;'
             $regex = $class->getMethod('getRegularExpression')->invoke(null);
             $maxLength = RegexUtils::getMaximumAcceptedStringLengthOfRegularExpression($regex, true);
             return $maxLength > 127 || $maxLength === null;
+        }
+        if (in_array(LimitedOptionsInterface::class, $interfaceNames)) {
+            $options = $class->getMethod('getOptions')->invoke(null);
+            foreach ($options as $option) {
+                if (strlen($option) > 127) {
+                    return true;
+                }
+            }
         }
         return false;
     }
