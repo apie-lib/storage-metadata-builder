@@ -41,7 +41,11 @@ final class RootObjectCodeGenerator implements RunGeneratedCodeContextInterface
                     continue;
                 }
                 if ($fieldDefinition instanceof GetterMethod) {
-                    $searchProperty->addAttribute(GetSearchIndexAttribute::class, [$fieldDefinition->getReflectionMethod()->name]);
+                    if ($fieldDefinition->getReflectionMethod()->getNumberOfRequiredParameters() === 0) {
+                        $searchProperty->addAttribute(GetSearchIndexAttribute::class, [$fieldDefinition->getReflectionMethod()->name]);
+                    } else {
+                        $table->removeProperty($searchProperty->getName());
+                    }
                 } elseif ($fieldDefinition instanceof PublicProperty) {
                     $searchProperty->addAttribute(GetSearchIndexAttribute::class, [$fieldName]);
                 }
