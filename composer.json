@@ -28,16 +28,16 @@
     "nette/utils": "3.*"
   },
   "require": {
-    "php": ">=8.3",
+    "php": ">=8.4",
     "apie/core": "self.version",
     "apie/storage-metadata": "self.version",
-    "nette/php-generator": "^4.1.5",
-    "nikic/php-parser": "^5.3.1"
+    "nette/php-generator": "^4.2.2",
+    "nikic/php-parser": "^5.8.0"
   },
   "require-dev": {
     "apie/fixtures": "self.version",
     "phpunit/phpunit": "^11.5.2",
-    "phpspec/prophecy-phpunit": "^2.2"
+    "phpspec/prophecy-phpunit": "^2.5"
   },
   "minimum-stability": "dev",
   "prefer-stable": true
