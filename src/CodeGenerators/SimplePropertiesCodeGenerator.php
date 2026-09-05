@@ -49,7 +49,7 @@ final class SimplePropertiesCodeGenerator implements RunGeneratedCodeContextInte
             ->setBody(
                 '$this->unserializedObject = $input;'
                 . PHP_EOL
-                . '$this->serializedString = serialize($input);'
+                . '$this->serializedString = \Opis\Closure\serialize($input);'
                 . PHP_EOL
                 . '$this->originalType = get_debug_type($input);'
             );
@@ -57,7 +57,7 @@ final class SimplePropertiesCodeGenerator implements RunGeneratedCodeContextInte
             ->setReturnType('mixed')
             ->setBody(
                 'if (!isset($this->unserializedObject)) {
-    $this->unserializedObject = unserialize($this->serializedString);
+    $this->unserializedObject = \Opis\Closure\unserialize($this->serializedString);
     if (get_debug_type($this->unserializedObject) !== $this->originalType) {
         throw new \LogicException("Could not unserialize object again");
     }

@@ -32,7 +32,8 @@
     "apie/core": "self.version",
     "apie/storage-metadata": "self.version",
     "nette/php-generator": "^4.2.2",
-    "nikic/php-parser": "^5.8.0"
+    "nikic/php-parser": "^5.8.0",
+    "opis/closure": "^4.5.0"
   },
   "require-dev": {
     "apie/fixtures": "self.version",
