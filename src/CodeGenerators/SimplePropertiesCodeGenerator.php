@@ -94,6 +94,9 @@ return $this->unserializedObject;'
             if ($options->alwaysMixedData) {
                 $scalar = ScalarType::MIXED;
             }
+            if ($options->noStorage) {
+                return;
+            }
         }
         $declaredProperty = $table->addProperty($propertyName)
             ->setType($nullable . $scalar->value);

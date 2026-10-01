@@ -16,7 +16,12 @@ The code is maintained in a monorepo, so PR's need to be sent to the [monorepo](
 ## Documentation
 This package is a ORM agnostic package that helps/creates POPO (plain old php objects) from an Apie domain object that can be used with an ORM. The only library using it now is [apie/doctrine-entity-converter](https://github.com/apie-lib/doctrine-entity-converter) that converts Apie domain objects to Doctrine entities.
 
-### Usage
+### Standalone usage
+Install it with:
+```bash
+composer require apie/storage-metadata-builder
+```
+
 You need a BoundedContextHashmap instance for all resources in all bounded contexts. Then you can easily create a builder like this:
 ```php
 use Apie\StorageMetadataBuilder\ChainedBootGeneratedCode;
