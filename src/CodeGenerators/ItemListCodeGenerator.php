@@ -3,26 +3,32 @@ namespace Apie\StorageMetadataBuilder\CodeGenerators;
 
 use Apie\Core\Attributes\StoreOptions;
 use Apie\Core\Context\ApieContext;
+use Apie\Core\Entities\EntityInterface;
 use Apie\Core\Enums\ScalarType;
 use Apie\Core\Identifiers\KebabCaseSlug;
+use Apie\Core\Lists\ItemSet;
 use Apie\Core\Metadata\ItemHashmapMetadata;
 use Apie\Core\Metadata\ItemListMetadata;
 use Apie\Core\Metadata\MetadataFactory;
 use Apie\Core\Metadata\MetadataInterface;
 use Apie\Core\Metadata\UnionTypeMetadata;
 use Apie\Core\Utils\ConverterUtils;
+use Apie\StorageMetadata\Attributes\ManyToManyAttribute;
 use Apie\StorageMetadata\Attributes\OneToManyAttribute;
 use Apie\StorageMetadata\Attributes\OrderAttribute;
 use Apie\StorageMetadata\Attributes\ParentAttribute;
+use Apie\StorageMetadata\Interfaces\OwnerLocalEntityStorageInterface;
 use Apie\StorageMetadataBuilder\Factories\ClassTypeFactory;
 use Apie\StorageMetadataBuilder\Interfaces\RunGeneratedCodeContextInterface;
 use Apie\StorageMetadataBuilder\Mediators\GeneratedCodeContext;
+use ReflectionClass;
+use ReflectionType;
 
 /**
- * Creates the one to many relations for lists.
- * - create a sub table for the list
- * - the sub table references the entity with 'parent' property
- * - an 'order' property is made for the index of the hashmap or the order of the list.
+ * Creates storage mappings for typed lists and hashmaps.
+ * - primitive and value-object items use a one-to-many child table
+ * - entity items in lists and hashmaps use owner-local many-to-many entities
+ * - an 'order' property stores list positions and hashmap keys.
  */
 final class ItemListCodeGenerator implements RunGeneratedCodeContextInterface
 {
@@ -57,6 +63,23 @@ final class ItemListCodeGenerator implements RunGeneratedCodeContextInterface
         }
 
         return true;
+    }
+
+    private function isSet(MetadataInterface $metadata): bool
+    {
+        if ($metadata instanceof ItemListMetadata) {
+            return $metadata->toClass()->isSubclassOf(ItemSet::class);
+        }
+        if ($metadata instanceof UnionTypeMetadata) {
+            return $this->isSet($metadata->toSkipNull());
+        }
+        return false;
+    }
+
+    private function getEntityClass(ReflectionType $type): ?ReflectionClass
+    {
+        $class = ConverterUtils::toReflectionClass($type);
+        return $class && $class->implementsInterface(EntityInterface::class) ? $class : null;
     }
 
     public function run(GeneratedCodeContext $generatedCodeContext): void
@@ -95,12 +118,24 @@ final class ItemListCodeGenerator implements RunGeneratedCodeContextInterface
                 return;
             }
             $arrayClass = $arrayType ? ConverterUtils::toReflectionClass($arrayType) : null;
+            $entityClass = $arrayType ? $this->getEntityClass($arrayType) : null;
+            $useManyToMany = $entityClass !== null && !$this->isSet($metadata);
             $table = in_array($scalar, ScalarType::PRIMITIVES)
                 ? ClassTypeFactory::createPrimitiveTable($tableName, $scalar->toReflectionType())
                 : ClassTypeFactory::createStorageTable($tableName, $arrayClass);
-            $table->addProperty('parent')
-                ->setType($currentTable->getName())
-                ->addAttribute(ParentAttribute::class);
+            if ($useManyToMany) {
+                $domainId = $table->getProperty('id')->cloneWithName('domainId');
+                $table->removeProperty('id');
+                $table->addMember($domainId);
+                $table->addImplement(OwnerLocalEntityStorageInterface::class);
+                $table->addMethod('getKey')
+                    ->setReturnType('?int')
+                    ->setBody('return $this->id;');
+            } else {
+                $table->addProperty('parent')
+                    ->setType($currentTable->getName())
+                    ->addAttribute(ParentAttribute::class);
+            }
             $table->addProperty('listOrder')
                 ->setType($this->isNotHashmap($metadata) ? 'int' : 'string')
                 ->addAttribute(OrderAttribute::class);
@@ -121,7 +156,7 @@ final class ItemListCodeGenerator implements RunGeneratedCodeContextInterface
             }
             $currentTable->addProperty($propertyName)
                 ->addAttribute(
-                    OneToManyAttribute::class,
+                    $useManyToMany ? ManyToManyAttribute::class : OneToManyAttribute::class,
                     $this->finetune(
                         [
                             $property->name,
