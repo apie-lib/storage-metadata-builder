@@ -52,7 +52,7 @@ final class SubObjectCodeGenerator implements RunGeneratedCodeContextInterface
             $generatedCodeContext->withCurrentObject($class)->iterateOverTable($table);
             $currentTable->addProperty($propertyName)
                 ->setType(($property->getType()->allowsNull() ? '?' : '') . $tableName)
-                ->addAttribute(OneToOneAttribute::class, [$property->name, null, $property->getDeclaringClass()->name]);
+                ->addAttribute(OneToOneAttribute::class, [$property->name, $property->getDeclaringClass()->name]);
         }
     }
 }

@@ -101,7 +101,7 @@ final class FileTableGenerator implements RunGeneratedCodeContextInterface
                 . str_replace('-', '_', (string) KebabCaseSlug::fromClass($property));
             $currentTable->addProperty($propertyName)
                 ->setType('?' . $tableName)
-                ->addAttribute(OneToOneAttribute::class, [$property->name, null, $property->getDeclaringClass()->name]);
+                ->addAttribute(OneToOneAttribute::class, [$property->name, $property->getDeclaringClass()->name]);
         }
     }
 }
