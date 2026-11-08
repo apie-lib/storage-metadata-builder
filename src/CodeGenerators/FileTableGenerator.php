@@ -33,7 +33,7 @@ final class FileTableGenerator implements RunGeneratedCodeContextInterface
             'clientOriginalFile' => ['getClientFilename', 'clientOriginalFile', $class->name],
             'fileSize' => ['getSize', 'fileSize', $class->name],
             'serverMimeType' => ['getServerMimeType', 'serverMimeType', $class->name],
-            'serverPath' => ['getServerPath', 'serverPath', $class->name],
+            // 'serverPath' => ['getServerPath', 'serverPath', $class->name],
             'indexing' => ['getIndexing', 'indexing', $class->name],
         ];
     }
